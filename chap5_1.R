@@ -78,7 +78,7 @@ group_data <- get.groups(raw_data)
 median.points <- get.median.points(group_data)
 
 # 原始数据图&初始总括点
-plot(raw_data$x, raw_data$y, pch=4)
+plot(raw_data$x, raw_data$y, pch=4, main = "原始数据&总括点&初始耐抗线")
 # 总括点
 medians_x <- unlist(median.points)[c(1,3,5)]
 medians_y <- unlist(median.points)[c(2,4,6)]
@@ -86,12 +86,17 @@ points(medians_x, medians_y, pch=16, col="green")
 # 分组线
 abline(v=sort(group_data$left$x,decreasing = TRUE)[1], lty=2, col="green")
 abline(v=sort(group_data$mid$x,decreasing = TRUE)[1], lty=2, col="green")
-
-# 传入第一次迭代的模型参数
+# 初始耐抗线
 a0_b0_xM <- get.a.b(median.points)
 a0 <- a0_b0_xM[1]
 b0 <- a0_b0_xM[2]
 xM <- a0_b0_xM[3]
+x_loc <- c(100:150)
+y_robust <- a0+b0*(x_loc-xM)
+lines(x_loc, y_robust, col='red')
+
+
+# 传入第一次迭代的模型参数
 # 初始化迭代参数
 iter <- 0
 b_abs_delta <- 1
@@ -155,7 +160,7 @@ plot(raw_data$x, ols_residual,
      pch=4, ylim = c(-20,20))
 
 
-# 拟合直线的比较
+# 拟合直线的比较[最终耐抗线与最小二乘法拟合直线]
 
 x_loc <- c(100:150)
 y_robust <- aFinal+bFinal*(x_loc-xM)
